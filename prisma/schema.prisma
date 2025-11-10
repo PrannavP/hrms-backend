@@ -56,3 +56,14 @@ model User {
     Designation    Int // from table of designation (user sets this)
     createdAt      DateTime       @default(now())
 }
+
+// SideNavBarMenu
+
+model Menu {
+    id          Int      @id @unique @default(autoincrement())
+    name        String
+    description String
+    url         String
+    order_id    Int
+    access_to   UserType
+}

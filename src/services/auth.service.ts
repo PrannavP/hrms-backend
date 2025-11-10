@@ -66,18 +66,6 @@ export const register = async (data: Register) => {
 };
 
 export const login = async (data: Login) => {
-    // Hardcoded admin credentials for DEV purpose
-    // REMOVE THIS IN PRODUCTION
-    if (data.email === process.env.ADMIN_EMAIL && data.password === process.env.ADMIN_PASSWORD) {
-        // You can set a dummy user id or fetch the admin user from DB if needed
-        const token = jwt.sign(
-            { id: 0, email: data.email },
-            process.env.JWT_SECRET!,
-            { expiresIn: "7d" }
-        );
-        return { status: 200, message: "Login successful", token };
-    };
-    
     // Check if the user exists or not
     const user = await prisma.user.findUnique({
         where: { email: data.email }
@@ -95,7 +83,7 @@ export const login = async (data: Login) => {
     // If password matches then generate a token using jwt with the .env secret key
     // and in token data send userId and email and expiry time with 7d
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, user_type: user.user_type },
         process.env.JWT_SECRET!,
         { expiresIn: "7d" }
     );

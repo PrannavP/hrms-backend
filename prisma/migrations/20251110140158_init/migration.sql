@@ -32,5 +32,20 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Menu" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "order_id" INTEGER NOT NULL,
+    "access_to" "UserType" NOT NULL,
+
+    CONSTRAINT "Menu_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Menu_id_key" ON "Menu"("id");

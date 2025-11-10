@@ -11,6 +11,9 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "author": "",
   "license": "ISC",
   "description": "",
