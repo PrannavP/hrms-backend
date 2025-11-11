@@ -132,6 +132,27 @@ async function main(){
         Designation: 1
     };
 
+    const employeePassword = "Prannav@123";
+    const employeeHashedPassword = await bcrypt.hash(employeePassword, 10); // same as register and login
+
+    // Employee seed
+    const employeeData = {
+        email: "prannav@hrms.com",
+        password: employeeHashedPassword,
+        full_name: "Prannav Panta",
+        user_type: UserType.employee,
+        joined_date: new Date("2025-05-01"),
+        contact_number: "9841234567",
+        address: "Jwagal, Lalitpur",
+        gender: GenderType.male,
+        type: EmployeeType.permanent,
+        date_of_birth: new Date("2000-05-18"),
+        status: EmployeeStatus.working,
+        Branch: 1,
+        Department: 1,
+        Designation: 1
+    };
+
     //#endregion
 
 
@@ -157,8 +178,17 @@ async function main(){
     };
 
     // ADMIN DATA SEEDING
-    const admin = await prisma.user.create({
-        data: adminData,
+    await prisma.user.upsert({
+        where: { email: adminData.email },
+        update: {},
+        create: adminData
+    });
+
+    // EMPLOYEE DATA SEEDING
+    await prisma.user.upsert({
+        where: { email: employeeData.email },
+        update: {},
+        create: employeeData
     });
     
     //#endregion

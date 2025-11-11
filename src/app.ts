@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import { setupSwagger } from "./swagger";
 import cors from "cors";
 
 import userRoutes from "./routes/user.routes";
@@ -15,6 +16,8 @@ app.use(cors({
 
 // Use the express middlewar to parse the data in json
 app.use(express.json());
+
+setupSwagger(app);
 
 // Route to user related
 app.use("/api/user", userRoutes);
