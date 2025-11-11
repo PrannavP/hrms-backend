@@ -83,10 +83,11 @@ export const login = async (data: Login) => {
     // If password matches then generate a token using jwt with the .env secret key
     // and in token data send userId and email and expiry time with 7d
     const token = jwt.sign(
-        { id: user.id, email: user.email, user_type: user.user_type },
+        { id: user.id, full_name: user.full_name, user_type: user.user_type },
         process.env.JWT_SECRET!,
         { expiresIn: "7d" }
     );
+
 
     return { status: 200, message: "Login successful", token };
 };

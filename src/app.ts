@@ -5,6 +5,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import menuRoutes from "./routes/menu.routes";
+import employeeRoutes from "./routes/employee.routes";
 
 const app: Application = express();
 
@@ -27,5 +28,8 @@ app.use("/api/auth", authRoutes);
 
 // Route related to Menu
 app.use("/api/menu", menuRoutes);
+
+// Route related to employees
+app.use('/api/employee', employeeRoutes);
 
 export default app;
