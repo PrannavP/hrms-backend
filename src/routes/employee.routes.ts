@@ -14,7 +14,8 @@ import { Router } from "express";
 import { authMiddleware, authorize } from "../middlewares/auth.middleware";
 import {
     onBoardNewEmployee,
-    editEmployeeDetails
+    editEmployeeDetails,
+    getEmployeeDetails
 } from "../controllers/employee.controller";
 
 const router = Router();
@@ -24,5 +25,8 @@ router.post('/onboardNewEmployee', validate(onBoardNewEmployeeSchema), authMiddl
 
 // Use the same validation for employee create
 router.post('/updateEmployee', validate(updateEmployeeSchema), authMiddleware, authorize(["admin"]), editEmployeeDetails);
+
+// get employee data endpoint for admin
+router.get("/getEmployee", authMiddleware, authorize(["admin"]), getEmployeeDetails);
 
 export default router;

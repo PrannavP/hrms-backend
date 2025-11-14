@@ -121,3 +121,32 @@ export const editEmployeeDetails = async (req: Request, res: Response) => {
         });
     }
 };
+
+// controller for admin to get a employee data
+export const getEmployeeDetails = async(req: Request, res: Response) => {
+    try{
+        // get employee id from query
+        const employeeId = Number(req.query.id);
+
+        const employee = await prisma.user.findUnique({
+            omit:{
+                password: true
+            },
+            where: {
+                id: employeeId
+            }
+        });
+
+        // if no employee found then return
+        if(!employee)
+            res.status(404).json({ message: "Employee not found.",  });
+
+        res.status(200).json({ employee });
+    }catch(err){
+        console.error("Error fetching employee data", err);
+        return res.status(500).json({
+            message: "Error fetching employee data",
+            error: err instanceof Error ? err.message : String(err)
+        });
+    }
+};
