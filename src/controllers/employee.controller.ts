@@ -57,12 +57,13 @@ export const onBoardNewEmployee = async (req: Request, res: Response) => {
             }
         });
 
-        console.log(newEmployee);
-
         // return { message: "Employee Created Successfully.", newEmployee };
-        res.status(201).json({ message: "Employee Create Successfully", newEmployee });
+        res.status(200).json({ message: "Employee Create Successfully", newEmployee });
     }catch(err){
         console.error("Error while on board new employee ", err);
-        res.status(500).json({ message: "Error onboarding new employee", err })
+        res.status(500).json({
+            message: "Error onboarding new employee",
+            error: err instanceof Error ? err.message : String(err)
+        });
     }
 };
