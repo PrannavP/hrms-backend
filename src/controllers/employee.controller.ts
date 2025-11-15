@@ -21,6 +21,17 @@ interface Employee{
     user_type: UserType;
 };
 
+// interface for employee list filter
+interface EmployeeQuery{
+    full_name?: string;
+    email?: string;
+    status?: EmployeeStatus;
+    type?: EmployeeType;
+    branch?: number;
+    department?: number;
+    designation?: number;
+}
+
 // controller for admin to create new employee
 export const onBoardNewEmployee = async (req: Request, res: Response) => {
     try{
@@ -147,6 +158,70 @@ export const getEmployeeDetails = async(req: Request, res: Response) => {
         return res.status(500).json({
             message: "Error fetching employee data",
             error: err instanceof Error ? err.message : String(err)
+        });
+    }
+};
+
+// controller for admin to fetch all emplooyees
+export const fetchAllEmployeeDetails = async(req: Request, res: Response) => {
+    try{
+        // deconstruct params from request query
+        const {
+            full_name,
+            email,
+            status,
+            type,
+            department,
+            designation,
+            branch,
+            page = 1,
+            limit = 20
+        } = req.query;
+
+        // Convert pagination to numbers
+        const take = Number(limit);
+        const skip = Number(Number((page)) - 1) * take;
+
+        // Build dynamic filter object
+        const where: any = {};
+
+        if(full_name) where.full_name = { contains: full_name, mode: "insensitive" };
+        if(email) where.email = { contains: email, mode: "insensitive" };
+        if(status) where.status = { contains: status };
+        if(type) where.type = { contains: type };
+        if(department) where.type = { contains: department };
+        if(designation) where.designation = { contains: designation };
+        if(branch) where.branch = { contains: branch };
+
+        // fetch employees
+        const employeesListDetail = await prisma.user.findMany({
+            where,
+            skip,
+            take,
+            orderBy: { createdAt: "desc" },
+            select: {
+                id: true,
+                full_name: true,
+                address: true,
+                email: true,
+                contact_number: true,
+                gender: true,
+                status: true,
+                Branch: true,
+                Designation: true,
+                Department: true,
+                joined_date: true
+            }
+        });
+
+        const total = await prisma.user.count({ where });
+
+        res.status(201).json({ message: "Employee list fetched.", page: Number(page), limit: take, total, data: employeesListDetail });
+    }catch(err){
+        console.error("Error fetching employee data list.");
+        res.status(500).json({ 
+            message: "Error fetching employee data.",
+            err: err instanceof Error ? err.message : String(err)
         });
     }
 };

@@ -15,7 +15,8 @@ import { authMiddleware, authorize } from "../middlewares/auth.middleware";
 import {
     onBoardNewEmployee,
     editEmployeeDetails,
-    getEmployeeDetails
+    getEmployeeDetails,
+    fetchAllEmployeeDetails
 } from "../controllers/employee.controller";
 
 const router = Router();
@@ -28,5 +29,8 @@ router.post('/updateEmployee', validate(updateEmployeeSchema), authMiddleware, a
 
 // get employee data endpoint for admin
 router.get("/getEmployee", authMiddleware, authorize(["admin"]), getEmployeeDetails);
+
+// get all employees in list for amdin
+router.get("/employeeList", authMiddleware, authorize(["admin"]), fetchAllEmployeeDetails);
 
 export default router;
