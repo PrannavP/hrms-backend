@@ -67,3 +67,28 @@ model Menu {
     order_id    Int
     access_to   UserType
 }
+
+// Attendance table
+model Attendance {
+    id                 Int      @id @default(autoincrement())
+    employee_id        Int
+    attendance_of_date DateTime @db.Date // Stores ONLY date (YYYY-MM-DD)
+    created_date       DateTime @default(now())
+    created_by         Int
+    updated_date       DateTime @default(now())
+    updated_by         Int
+}
+
+// enum punch type
+enum PunchType {
+    IN
+    OUT
+}
+
+// Attendance log table (this table relations with Attendance (not foregin key relation))
+model AttendanceLog {
+    id            Int       @id @default(autoincrement())
+    attendance_id Int
+    punch_time    DateTime
+    punchType     PunchType // enum
+}
